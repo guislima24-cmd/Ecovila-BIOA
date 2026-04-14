@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Manutenção — RPPN Zona 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-900: #0d2b1a;
+    --green-800: #163d26;
+    --green-700: #1e5433;
+    --green-500: #2d7a4a;
+    --green-400: #3d9e62;
+    --green-300: #6bbf88;
+    --green-100: #c8ebd7;
+    --green-50:  #eaf6ef;
+    --amber-500: #c47e1a;
+    --amber-300: #e8a83d;
+    --amber-100: #faebd0;
+    --blue-500:  #2563a8;
+    --blue-100:  #dbeafe;
+    --text-primary: #1a2e1f;
+    --text-secondary: #4a6355;
+    --text-muted: #7a9e8a;
+    --bg: #f5f9f6;
+    --bg-card: #ffffff;
+    --border: #d4e8db;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── decorative bg pattern ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: radial-gradient(circle at 20% 20%, rgba(45,122,74,0.06) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(45,122,74,0.05) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .wrapper { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; position: relative; z-index: 1; }
+
+  /* ── HEADER ── */
+  header { margin-bottom: 56px; }
+  .zone-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green-500); background: var(--green-50);
+    border: 1px solid var(--green-100); border-radius: 20px;
+    padding: 6px 14px; margin-bottom: 20px;
+  }
+  .zone-label::before { content: ''; display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--green-400); }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 52px); font-weight: 700;
+    color: var(--green-900); line-height: 1.15; margin-bottom: 16px;
+  }
+  h1 em { font-style: italic; color: var(--green-500); }
+  .subtitle { font-size: 16px; color: var(--text-secondary); max-width: 560px; line-height: 1.7; }
+
+  .meta-row { display: flex; gap: 24px; margin-top: 28px; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-item .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); }
+  .meta-item .value { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+
+  /* ── NAV TABS ── */
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 36px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 5px; }
+  .tab-btn {
+    flex: 1; padding: 10px 8px; border: none; border-radius: var(--radius-sm);
+    background: transparent; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; color: var(--text-secondary);
+    transition: all 0.2s ease;
+  }
+  .tab-btn:hover { background: var(--green-50); color: var(--green-700); }
+  .tab-btn.active { background: var(--green-800); color: #fff; }
+
+  /* ── SECTIONS ── */
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 600; color: var(--green-900);
+    margin-bottom: 8px;
+  }
+  .section-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 28px; line-height: 1.65; }
+
+  /* ── CARDS GRID ── */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 22px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover { box-shadow: 0 4px 24px rgba(22,61,38,0.1); transform: translateY(-2px); }
+  .card-badge {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 20px; margin-bottom: 12px;
+  }
+  .badge-sup   { background: var(--green-50);  color: var(--green-700); border: 1px solid var(--green-100); }
+  .badge-mid   { background: #e0f5ee; color: #0c6e56; border: 1px solid #9fe1cb; }
+  .badge-pio   { background: var(--amber-100); color: var(--amber-500); border: 1px solid #f5c55b; }
+  .badge-info  { background: var(--blue-100);  color: var(--blue-500);  border: 1px solid #bfdbfe; }
+  .card h3 { font-size: 15px; font-weight: 500; margin-bottom: 8px; color: var(--green-900); }
+  .card p  { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .tag {
+    font-size: 11px; background: var(--green-50); color: var(--green-700);
+    border: 1px solid var(--green-100); border-radius: 20px; padding: 3px 10px;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 5px; top: 8px; bottom: 8px;
+    width: 1.5px; background: var(--border);
+  }
+  .tl-item { position: relative; margin-bottom: 32px; }
+  .tl-dot {
+    position: absolute; left: -32px; top: 4px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--bg); outline: 2px solid var(--green-400);
+    background: var(--green-400);
+  }
+  .tl-dot.amber   { background: var(--amber-300); outline-color: var(--amber-300); }
+  .tl-dot.blue    { background: var(--blue-500);  outline-color: var(--blue-500); }
+  .tl-dot.dark    { background: var(--green-800); outline-color: var(--green-800); }
+  .tl-period { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .tl-title { font-size: 15px; font-weight: 500; color: var(--green-900); margin-bottom: 6px; }
+  .tl-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+  .tl-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+
+  /* ── INDICATORS TABLE ── */
+  .indicators { display: flex; flex-direction: column; gap: 10px; }
+  .ind-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 18px; gap: 16px;
+    transition: background 0.15s;
+  }
+  .ind-row:hover { background: var(--green-50); }
+  .ind-name { font-size: 14px; color: var(--text-secondary); flex: 1; }
+  .ind-value { font-size: 13px; font-weight: 500; color: var(--green-700); text-align: right; }
+  .ind-icon { font-size: 16px; width: 32px; text-align: center; }
+
+  /* ── MANEJO ACCORDIONS ── */
+  .accord-list { display: flex; flex-direction: column; gap: 8px; }
+  .accord {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); overflow: hidden;
+  }
+  .accord-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .accord-head:hover { background: var(--green-50); }
+  .accord-head-left { display: flex; align-items: center; gap: 12px; }
+  .accord-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--green-50); border: 1px solid var(--green-100); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .accord-title { font-size: 14px; font-weight: 500; color: var(--green-900); }
+  .accord-chevron { font-size: 12px; color: var(--text-muted); transition: transform 0.2s; }
+  .accord.open .accord-chevron { transform: rotate(180deg); }
+  .accord-body { display: none; padding: 0 20px 18px; font-size: 13px; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 16px; }
+  .accord.open .accord-body { display: block; }
+
+  /* ── ESPÉCIES TABLE ── */
+  .species-filter { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .filter-btn {
+    font-size: 12px; font-weight: 500; padding: 7px 16px; border-radius: 20px;
+    border: 1px solid var(--border); background: var(--bg-card);
+    cursor: pointer; font-family: 'DM Sans', sans-serif; color: var(--text-secondary);
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--green-300); color: var(--green-700); }
+  .filter-btn.active { background: var(--green-800); border-color: var(--green-800); color: #fff; }
+  .species-table { width: 100%; border-collapse: collapse; }
+  .species-table th {
+    text-align: left; font-size: 11px; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.07em; color: var(--text-muted); padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .species-table td { padding: 12px 12px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .species-table tr:hover td { background: var(--green-50); }
+  .species-table .name { font-weight: 500; color: var(--green-900); }
+  .species-table .sci  { font-style: italic; color: var(--text-muted); font-size: 12px; }
+  .pill { font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+
+  /* ── FOOTER NOTE ── */
+  .footer-note {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text-muted); text-align: center; line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="zone-label">RPPN · Zona 5 · Ecovila ABC</div>
+    <h1>Plano de Manutenção<br><em>Área de Preservação</em></h1>
+    <p class="subtitle">Reflorestamento de porte arbóreo, manejo sustentável e ecoturismo educativo na região do ABC paulista. Bioma Mata Atlântica.</p>
+    <div class="meta-row">
+      <div class="meta-item"><span class="label">Objetivo</span><span class="value">Preservação + Pesquisa</span></div>
+      <div class="meta-item"><span class="label">Horizonte</span><span class="value">5+ anos</span></div>
+      <div class="meta-item"><span class="label">Bioma</span><span class="value">Mata Atlântica</span></div>
+      <div class="meta-item"><span class="label">Categoria</span><span class="value">RPPN</span></div>
+    </div>
+  </header>
+
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('estratos')">Estratos</button>
+    <button class="tab-btn" onclick="showTab('cronograma')">Cronograma</button>
+    <button class="tab-btn" onclick="showTab('manejo')">Manejo</button>
+    <button class="tab-btn" onclick="showTab('especies')">Espécies</button>
+    <button class="tab-btn" onclick="showTab('indicadores')">Indicadores</button>
+  </nav>
+
+  <!-- ── ESTRATOS ── -->
+  <div id="tab-estratos" class="section active">
+    <h2 class="section-heading">Estratos de plantio</h2>
+    <p class="section-desc">A restauração segue a sucessão ecológica natural — pioneiras preparam o terreno, espécies de estrato médio formam o sub-bosque, e as emergentes constroem o dossel definitivo.</p>
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-badge badge-sup">Estrato superior</span>
+        <h3>Emergentes (dossel)</h3>
+        <p>Espécies de grande porte que formam o teto da floresta. Crescimento lento, plantio prioritário para o longo prazo. Atraem fauna e consolidam a estrutura florestal.</p>
+        <div class="tag-list">
+          <span class="tag">Jequitibá</span><span class="tag">Ipê-amarelo</span>
+          <span class="tag">Angico</span><span class="tag">Peroba</span><span class="tag">Guarantã</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-badge badge-mid">Estrato médio</span>
+        <h3>Sub-bosque</h3>
+        <p>Preenchem a estrutura intermediária, aceleram a sucessão e oferecem sombra e abrigo para a fauna do estrato mais baixo se estabelecer.</p>
+        <div class="tag-list">
+          <span class="tag">Embaúba</span><span class="tag">Guapuruvu</span>
+          <span class="tag">Mutambo</span><span class="tag">Cepilho</span><span class="tag">Canafístula</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-badge badge-pio">Pioneiras</span>
+        <h3>Cobertura inicial</h3>
+        <p>Crescimento rápido. Cobrem o solo exposto e criam as condições microclimáticas para as espécies tardias germinarem e crescerem.</p>
+        <div class="tag-list">
+          <span class="tag">Aroeira</span><span class="tag">Maricá</span>
+          <span class="tag">Mutamba</span><span class="tag">Fedegoso</span>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-badge badge-info">Estratégia</span>
+        <h3>Técnica de nucleação</h3>
+        <p>Plantio em núcleos dispersos imitando a regeneração natural. Reduz custo, facilita manutenção e imita a dinâmica real da Mata Atlântica.</p>
+        <div class="tag-list">
+          <span class="tag">Espaçamento 3×3m</span><span class="tag">Poleiro artificial</span>
+          <span class="tag">Transposição de solo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CRONOGRAMA ── -->
+  <div id="tab-cronograma" class="section">
+    <h2 class="section-heading">Cronograma de implantação</h2>
+    <p class="section-desc">Horizonte de 5 anos para consolidação da cobertura arbórea, com manutenções trimestrais e avaliações anuais de desenvolvimento.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Ano 1 — Fase 1</div>
+        <div class="tl-title">Diagnóstico e preparo do terreno</div>
+        <div class="tl-desc">Levantamento das espécies nativas já presentes. Mapeamento de clareiras e áreas degradadas. Análise de solo e pH. Definição dos núcleos de plantio e cercamento de proteção.</div>
+        <div class="tl-tags"><span class="tag">Inventário florístico</span><span class="tag">Análise de solo</span><span class="tag">Mapeamento</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Ano 1–2 — Fase 2</div>
+        <div class="tl-title">Plantio inicial e estabelecimento</div>
+        <div class="tl-desc">Plantio em núcleos: alternância entre pioneiras e espécies de estrato médio. Manutenção trimestral com coroamento das mudas, controle de invasoras e reposição de falhas (meta: ≥70% de sobrevivência ao fim do primeiro ano).</div>
+        <div class="tl-tags"><span class="tag">Plantio em núcleos</span><span class="tag">Manutenção trimestral</span><span class="tag">Controle de invasoras</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot amber"></div>
+        <div class="tl-period">Ano 3–5 — Fase 3</div>
+        <div class="tl-title">Adensamento e estruturação</div>
+        <div class="tl-desc">Introdução das espécies emergentes (jequitibá, ipê, peroba). Monitoramento do fechamento do dossel por foto-ponto semestral. Instalação dos poleiros artificiais e início da trilha de ecoturismo com sinalização interpretativa.</div>
+        <div class="tl-tags"><span class="tag">Espécies emergentes</span><span class="tag">Foto-ponto</span><span class="tag">Trilha ecoturismo</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot blue"></div>
+        <div class="tl-period">Ano 5+ — Fase 4</div>
+        <div class="tl-title">Manejo, pesquisa e ecoturismo</div>
+        <div class="tl-desc">Raleamento seletivo quando necessário. Coleta de sementes para viveiro interno. Monitoramento de biodiversidade por câmera-trap e transectos. Parcerias com universidades (UFABC, por exemplo) para pesquisa de campo e visitação guiada.</div>
+        <div class="tl-tags"><span class="tag">Viveiro interno</span><span class="tag">Câmera-trap</span><span class="tag">Parcerias acadêmicas</span></div>
+      </div>
+      <div class="tl-item" style="margin-bottom:0">
+        <div class="tl-dot dark"></div>
+        <div class="tl-period">Contínuo</div>
+        <div class="tl-title">Monitoramento e avaliação anual</div>
+        <div class="tl-desc">Inventário bianual de riqueza de espécies, avaliação de regeneração natural, registro de visitantes no ecoturismo e relatório anual de evolução da área.</div>
+        <div class="tl-tags"><span class="tag">Inventário bianual</span><span class="tag">Relatório anual</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MANEJO ── -->
+  <div id="tab-manejo" class="section">
+    <h2 class="section-heading">Práticas de manejo</h2>
+    <p class="section-desc">Conjunto de técnicas baseadas em restauração ecológica que maximizam o sucesso sem uso de insumos químicos, compatíveis com a legislação de RPPN.</p>
+    <div class="accord-list">
+      <div class="accord" onclick="toggleAccord(this)">
+        <div class="accord-head">
+          <div class="accord-head-left"><div class="accord-icon">🌱</div><span class="accord-title">Nucleação</span></div>
+          <span class="accord-chevron">▼</span>
+        </div>
+        <div class="accord-body">Plantio em núcleos de 5–9 mudas (mistura de pioneiras + espécies tardias), dispersos de forma irregular pela área. Os núcleos se expandem por regeneração natural, criando uma cobertura heterogênea que imita a floresta real. Ideal para áreas extensas com baixo orçamento de manutenção.</div>
+      </div>
+      <div class="accord" onclick="toggleAccord(this)">
+        <div class="accord-head">
+          <div class="accord-head-left"><div class="accord-icon">🪣</div><span class="accord-title">Transposição de solo</span></div>
+          <span class="accord-chevron">▼</span>
+        </div>
+        <div class="accord-body">Coleta de solo superficial (primeiros 5–10 cm) de fragmentos florestais vizinhos preservados e deposição nas áreas a restaurar. Introduz banco de sementes nativo, fungos micorrízicos e microbiota do solo — acelerando a regeneração e aumentando a resistência das mudas.</div>
+      </div>
+      <div class="accord" onclick="toggleAccord(this)">
+        <div class="accord-head">
+          <div class="accord-head-left"><div class="accord-icon">🎋</div><span class="accord-title">Poleiros artificiais</span></div>
+          <span class="accord-chevron">▼</span>
+        </div>
+        <div class="accord-body">Instalação de estruturas simples de bambu ou eucalipto (5–7m de altura) nas clareiras para atrair aves frugívoras e morcegos dispersores de sementes. Cada poleiro pode contribuir com dezenas de espécies de sementes por ano, acelerando a regeneração passiva e integrando a área a fragmentos vizinhos.</div>
+      </div>
+      <div class="accord" onclick="toggleAccord(this)">
+        <div class="accord-head">
+          <div class="accord-head-left"><div class="accord-icon">🌿</div><span class="accord-title">Controle de invasoras</span></div>
+          <span class="accord-chevron">▼</span>
+        </div>
+        <div class="accord-body">Roçada manual num raio de 60 cm ao redor de cada muda (coroamento) nas manutenções trimestrais. Sem uso de herbicidas na RPPN. Espécies mais problemáticas no ABC: braquiária (Urochloa decumbens), tiririca e guanxuma. Após fechamento do dossel, o sombreamento natural reduz drásticamente a pressão de invasoras.</div>
+      </div>
+      <div class="accord" onclick="toggleAccord(this)">
+        <div class="accord-head">
+          <div class="accord-head-left"><div class="accord-icon">💧</div><span class="accord-title">Irrigação e adubação</span></div>
+          <span class="accord-chevron">▼</span>
+        </div>
+        <div class="accord-body">Irrigação suplementar somente no período de estiagem (maio–setembro) nos primeiros 12 meses de cada muda. A partir do segundo ano, as plantas devem ser auto-suficientes. Adubação com composto orgânico ou bokashi na cova de plantio — sem fertilizantes sintéticos. Caldas de cobertura com palha e folhas secas para retenção de umidade.</div>
+      </div>
+      <div class="accord" onclick="toggleAccord(this)">
+        <div class="accord-head">
+          <div class="accord-head-left"><div class="accord-icon">🔬</div><span class="accord-title">Pesquisa e ecoturismo</span></div>
+          <span class="accord-chevron">▼</span>
+        </div>
+        <div class="accord-body">A RPPN viabiliza parceria com programas de pós-graduação para pesquisa de longo prazo (fenologia, avifauna, regeneração). O ecoturismo educativo é conduzido em trilha interpretativa com capacidade de carga controlada (máx. 15 visitantes/grupo). Monitores treinados garantem que a visitação não comprometa a restauração.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ESPÉCIES ── -->
+  <div id="tab-especies" class="section">
+    <h2 class="section-heading">Espécies recomendadas</h2>
+    <p class="section-desc">Seleção baseada em espécies nativas da Mata Atlântica com ocorrência histórica confirmada para o Estado de São Paulo.</p>
+    <div class="species-filter">
+      <button class="filter-btn active" onclick="filterSpecies('all', this)">Todas</button>
+      <button class="filter-btn" onclick="filterSpecies('emergente', this)">Emergentes</button>
+      <button class="filter-btn" onclick="filterSpecies('medio', this)">Sub-bosque</button>
+      <button class="filter-btn" onclick="filterSpecies('pioneira', this)">Pioneiras</button>
+    </div>
+    <table class="species-table">
+      <thead>
+        <tr>
+          <th>Nome popular</th>
+          <th>Nome científico</th>
+          <th>Estrato</th>
+          <th>Destaque</th>
+        </tr>
+      </thead>
+      <tbody id="species-tbody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── INDICADORES ── -->
+  <div id="tab-indicadores" class="section">
+    <h2 class="section-heading">Indicadores de monitoramento</h2>
+    <p class="section-desc">Métricas para avaliar o sucesso da restauração ao longo do tempo. Aplicados anualmente com relatório consolidado.</p>
+    <div class="indicators">
+      <div class="ind-row">
+        <span class="ind-icon">🌱</span>
+        <span class="ind-name">Taxa de sobrevivência das mudas</span>
+        <span class="ind-value">≥ 70% ao 1º ano</span>
+      </div>
+      <div class="ind-row">
+        <span class="ind-icon">🌳</span>
+        <span class="ind-name">Fechamento do dossel</span>
+        <span class="ind-value">Foto-ponto semestral</span>
+      </div>
+      <div class="ind-row">
+        <span class="ind-icon">🔢</span>
+        <span class="ind-name">Riqueza de espécies arbóreas</span>
+        <span class="ind-value">Inventário bianual</span>
+      </div>
+      <div class="ind-row">
+        <span class="ind-icon">🐦</span>
+        <span class="ind-name">Riqueza de avifauna</span>
+        <span class="ind-value">Transecto semestral</span>
+      </div>
+      <div class="ind-row">
+        <span class="ind-icon">📷</span>
+        <span class="ind-name">Presença de fauna dispersora</span>
+        <span class="ind-value">Câmera-trap contínua</span>
+      </div>
+      <div class="ind-row">
+        <span class="ind-icon">🌿</span>
+        <span class="ind-name">Cobertura de invasoras</span>
+        <span class="ind-value">% em transecto anual</span>
+      </div>
+      <div class="ind-row">
+        <span class="ind-icon">🔬</span>
+        <span class="ind-name">Regeneração natural (plântulas)</span>
+        <span class="ind-value">Parcelas 2×2m anuais</span>
+      </div>
+      <div class="ind-row">
+        <span class="ind-icon">🥾</span>
+        <span class="ind-name">Visitantes no ecoturismo</span>
+        <span class="ind-value">Registro por trilha guiada</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-note">
+    Plano elaborado para trabalho acadêmico — Ecovila Imaginária, Região do ABC Paulista.<br>
+    Referências: IBAMA, SMA-SP, Resolução SMA 08/2008 — espécies nativas para restauração no Estado de São Paulo.
+  </p>
+</div>
+
+<script>
+  const species = [
+    { popular: 'Jequitibá-rosa',    sci: 'Cariniana legalis',          estrato: 'emergente', destaque: 'Espécie ameaçada, símbolo da Mata Atlântica' },
+    { popular: 'Ipê-amarelo',       sci: 'Handroanthus albus',         estrato: 'emergente', destaque: 'Alta atratividade para aves e turismo' },
+    { popular: 'Angico-vermelho',   sci: 'Anadenanthera colubrina',    estrato: 'emergente', destaque: 'Fixadora de nitrogênio, madeira nobre' },
+    { popular: 'Peroba-rosa',       sci: 'Aspidosperma polyneuron',    estrato: 'emergente', destaque: 'Espécie ameaçada, crescimento lento' },
+    { popular: 'Guarantã',          sci: 'Esenbeckia leiocarpa',       estrato: 'emergente', destaque: 'Madeira resistente, copa densa' },
+    { popular: 'Embaúba',           sci: 'Cecropia pachystachya',      estrato: 'medio',     destaque: 'Pioneira de dossel, atrai morcegos' },
+    { popular: 'Guapuruvu',         sci: 'Schizolobium parahyba',      estrato: 'medio',     destaque: 'Crescimento rápido, flores exuberantes' },
+    { popular: 'Canafístula',       sci: 'Peltophorum dubium',         estrato: 'medio',     destaque: 'Boa produção de frutos para fauna' },
+    { popular: 'Mutambo',           sci: 'Guazuma ulmifolia',          estrato: 'medio',     destaque: 'Frutos comestíveis para fauna' },
+    { popular: 'Cepilho',           sci: 'Machaerium nyctitans',       estrato: 'medio',     destaque: 'Fixadora de nitrogênio' },
+    { popular: 'Aroeira-pimenteira',sci: 'Schinus terebinthifolia',    estrato: 'pioneira',  destaque: 'Muito resistente, atrai aves' },
+    { popular: 'Maricá',            sci: 'Mimosa bimucronata',         estrato: 'pioneira',  destaque: 'Rápido crescimento, boa cobertura' },
+    { popular: 'Mutamba',           sci: 'Guazuma ulmifolia',          estrato: 'pioneira',  destaque: 'Proteção do solo exposto' },
+    { popular: 'Fedegoso',          sci: 'Senna macranthera',          estrato: 'pioneira',  destaque: 'Flores vistosas, boa para abelhas' },
+  ];
+
+  const estratoLabel = { emergente: 'Emergente', medio: 'Sub-bosque', pioneira: 'Pioneira' };
+  const estratoClass = { emergente: 'badge-sup', medio: 'badge-mid', pioneira: 'badge-pio' };
+
+  function renderSpecies(filter) {
+    const tbody = document.getElementById('species-tbody');
+    const list = filter === 'all' ? species : species.filter(s => s.estrato === filter);
+    tbody.innerHTML = list.map(s => `
+      <tr>
+        <td><span class="name">${s.popular}</span></td>
+        <td><span class="sci">${s.sci}</span></td>
+        <td><span class="pill ${estratoClass[s.estrato]}">${estratoLabel[s.estrato]}</span></td>
+        <td style="color:var(--text-secondary);font-size:12px">${s.destaque}</td>
+      </tr>
+    `).join('');
+  }
+  renderSpecies('all');
+
+  function filterSpecies(val, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderSpecies(val);
+  }
+
+  function showTab(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function toggleAccord(el) {
+    el.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
